@@ -1,9 +1,12 @@
 package com.example.todolist.model;
 import javax.persistence.*;
+import java.util.Optional;
 
 @Entity
 @Table(name = "card")
 public class Card {
+
+    public Card(){}
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -16,8 +19,11 @@ public class Card {
     @Column(name = "CARD_DESCRIPTION", nullable = false)
     private String description;
 
+    @Column(name = "CARD_STATUS", columnDefinition="default 'TODO")
+    private String status;
+
     @OneToOne
-    @JoinColumn(name = "CARD_BLOCKER")
+    @JoinColumn(name = "CARD_BLOCKER", nullable = true)
     private Card blockerCard;
 
     public Long getId() {
@@ -50,5 +56,13 @@ public class Card {
 
     public void setBlockerCard(Card blockerCard) {
         this.blockerCard = blockerCard;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
