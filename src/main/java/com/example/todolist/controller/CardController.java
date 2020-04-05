@@ -11,7 +11,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collection;
 
-// there's a base path configured in application properties /api/cards/v1
 @RestController
 @CrossOrigin
 public class CardController {

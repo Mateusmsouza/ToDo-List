@@ -26,6 +26,13 @@ public class Card {
     @JoinColumn(name = "CARD_BLOCKER", nullable = true)
     private Card blockerCard;
 
+    @ManyToOne( fetch = FetchType.LAZY)
+    @JoinTable( name = "user_app",
+            joinColumns = { @JoinColumn(name = "USER_ID") },
+            inverseJoinColumns = { @JoinColumn(name = "CARD_USER_OWNER") }
+    )
+    private User userCardOwner;
+
     public Long getId() {
         return id;
     }
@@ -64,5 +71,13 @@ public class Card {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public User getUserCardOwner() {
+        return userCardOwner;
+    }
+
+    public void setUserCardOwner(User userCardOwner) {
+        this.userCardOwner = userCardOwner;
     }
 }
