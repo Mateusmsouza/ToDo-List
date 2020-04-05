@@ -1,4 +1,6 @@
 package com.example.todolist.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Optional;
 
@@ -26,11 +28,9 @@ public class Card {
     @JoinColumn(name = "CARD_BLOCKER", nullable = true)
     private Card blockerCard;
 
-    @ManyToOne( fetch = FetchType.LAZY)
-    @JoinTable( name = "user_app",
-            joinColumns = { @JoinColumn(name = "USER_ID") },
-            inverseJoinColumns = { @JoinColumn(name = "CARD_USER_OWNER") }
-    )
+    @ManyToOne( fetch = FetchType.LAZY, optional = false)
+    @JsonIgnore
+    @JoinColumn(name = "CARD_USER_OWNER", nullable = false)
     private User userCardOwner;
 
     public Long getId() {

@@ -13,6 +13,9 @@ public class CardServiceImpl implements CardService {
     @Autowired
     private CardRepository cardRepo;
 
+    @Autowired
+    private UserRepository userRepo;
+
     @Override
     public ArrayList<Card> listAllCards() {
         return (ArrayList<Card>) cardRepo.findAll();
@@ -28,6 +31,10 @@ public class CardServiceImpl implements CardService {
 
         if (card.getBlockerCard() != null){
             this.getCardById(card.getBlockerCard().getId()).get();
+        }
+
+        if (card.getUserCardOwner() != null){
+            this.userRepo.findById(card.getUserCardOwner().getId()).get();
         }
 
         return cardRepo.save(card);

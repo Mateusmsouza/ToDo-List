@@ -1,6 +1,7 @@
 package com.example.todolist.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "user_app")
@@ -21,6 +22,18 @@ public class User {
 
     @Column(name = "USER_PASSWORD")
     private String password;
+
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
+    }
+
+    @OneToMany(mappedBy = "userCardOwner", fetch = FetchType.LAZY,
+    cascade =  CascadeType.ALL)
+    private List<Card> cards;
 
     public long getId() {
         return id;

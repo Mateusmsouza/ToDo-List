@@ -5,10 +5,7 @@ import com.example.todolist.model.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import java.util.Optional;
 
@@ -37,18 +34,27 @@ public class UserController {
             UriComponentsBuilder uriComponentsBuilder){
 
         Optional<User> foundUser = userService.login(user);
-        User accountUser = foundUser.get();
 
-        if( accountUser.equals(null)){
+
+        if( foundUser.isPresent() == false){
             return new ResponseEntity<User>(
                     HttpStatus.UNAUTHORIZED
             );
         }
 
         return new ResponseEntity<User>(
+                foundUser.get(),
                 HttpStatus.OK
         );
     }
 
+    @DeleteMapping("/user/{userId}")
+    public  ResponseEntity<User> removeUser(
+            @PathVariable Long userId){
+        userService.delete(userId);
 
+        return new ResponseEntity<User>(
+                HttpStatus.OK
+        );
+    }
 }
