@@ -1,4 +1,4 @@
-package com.example.todolist.model;
+package com.example.todolist.model.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

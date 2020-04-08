@@ -1,8 +1,8 @@
-package com.example.todolist.model;
+package com.example.todolist.model.card;
+import com.example.todolist.model.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.Optional;
 
 @Entity
 @Table(name = "card")

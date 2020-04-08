@@ -1,7 +1,7 @@
 package com.example.todolist.controller;
 
-import com.example.todolist.model.User;
-import com.example.todolist.model.UserService;
+import com.example.todolist.model.user.User;
+import com.example.todolist.model.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

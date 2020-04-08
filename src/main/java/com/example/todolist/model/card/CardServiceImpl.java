@@ -1,11 +1,11 @@
-package com.example.todolist.model;
+package com.example.todolist.model.card;
 
+import com.example.todolist.model.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.function.Function;
 
 @Service("CardService")
 public class CardServiceImpl implements CardService {
@@ -33,8 +33,14 @@ public class CardServiceImpl implements CardService {
             this.getCardById(card.getBlockerCard().getId()).get();
         }
 
+        //TODO: fix here to retrieve user data from authorization token
+        //currently @JsonIgnoreField on model is breaking below code
         if (card.getUserCardOwner() != null){
-            this.userRepo.findById(card.getUserCardOwner().getId()).get();
+            card.setUserCardOwner(
+                    userRepo.findById(
+                            card.getUserCardOwner().getId()
+                    ).get()
+            );
         }
 
         return cardRepo.save(card);

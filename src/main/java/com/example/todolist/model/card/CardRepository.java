@@ -1,4 +1,4 @@
-package com.example.todolist.model;
+package com.example.todolist.model.card;
 
 import org.springframework.data.repository.CrudRepository;
 

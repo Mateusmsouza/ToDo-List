@@ -1,4 +1,4 @@
-package com.example.todolist.model;
+package com.example.todolist.model.card;
 
 import java.util.ArrayList;
 import java.util.Optional;

@@ -1,4 +1,6 @@
-package com.example.todolist.model;
+package com.example.todolist.model.user;
+
+import com.example.todolist.model.card.Card;
 
 import javax.persistence.*;
 import java.util.List;

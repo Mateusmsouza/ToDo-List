@@ -1,6 +1,5 @@
-package com.example.todolist.model;
+package com.example.todolist.model.user;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 public interface UserService {
