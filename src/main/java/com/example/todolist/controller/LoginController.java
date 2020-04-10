@@ -6,7 +6,6 @@ import com.example.todolist.model.user.User;
 import com.example.todolist.security.JwtUtils;
 import com.example.todolist.security.Login;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,13 +29,13 @@ public class LoginController {
         this.auth = auth;
     }
 
-    @RequestMapping(path = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path = "/user", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public User login(@RequestBody Login login, HttpServletResponse response) throws JsonProcessingException {
         Authentication credentials = new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword());
-        User usuario = (User) auth.authenticate(credentials).getPrincipal();
-        usuario.setPassword(null);
-        response.setHeader("Token", JwtUtils.generateToken(usuario));
-        return usuario;
+        User user = (User) auth.authenticate(credentials).getPrincipal();
+        user.setPassword(null);
+        response.setHeader("Token", JwtUtils.generateToken(user));
+        return user;
     }
 
 }

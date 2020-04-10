@@ -23,7 +23,7 @@
     <!-- Autenticador custom-->
     <sec:authentication-manager alias="authenticationManager">
         <sec:authentication-provider
-                user-service-ref="segurancaService">
+                user-service-ref="securityService">
             <sec:password-encoder hash="md5"></sec:password-encoder>
         </sec:authentication-provider>
     </sec:authentication-manager>
