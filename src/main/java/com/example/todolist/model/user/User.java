@@ -1,13 +1,17 @@
 package com.example.todolist.model.user;
 
+import com.example.todolist.model.authorization.Authorization;
 import com.example.todolist.model.card.Card;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "user_app")
-public class User {
+public class User implements UserDetails {
 
     public User(){}
 
@@ -24,6 +28,12 @@ public class User {
 
     @Column(name = "USER_PASSWORD")
     private String password;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_authorization",
+        joinColumns = { @JoinColumn(name = "USER_ID")},
+        inverseJoinColumns = { @JoinColumn(name = "AUT_ID")})
+    private List<Authorization> authorizations;
 
     public List<Card> getCards() {
         return cards;
@@ -65,8 +75,42 @@ public class User {
         return password;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorizations;
+    }
+
+    @Override
+    public String getUsername() {
+        return name;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public List<Authorization> getAuthorizations() { return authorizations; }
+
+    public void setAuthorizations(List<Authorization> authorizations) { this.authorizations = authorizations; }
 }
 
