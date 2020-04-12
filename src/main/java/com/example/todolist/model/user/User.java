@@ -2,6 +2,7 @@ package com.example.todolist.model.user;
 
 import com.example.todolist.model.authorization.Authorization;
 import com.example.todolist.model.card.Card;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -33,8 +34,10 @@ public class User implements UserDetails {
     @JoinTable(name = "user_authorization",
         joinColumns = { @JoinColumn(name = "USER_ID")},
         inverseJoinColumns = { @JoinColumn(name = "AUT_ID")})
+    @JsonIgnore
     private List<Authorization> authorizations;
 
+    @JsonIgnore
     public List<Card> getCards() {
         return cards;
     }
@@ -76,31 +79,37 @@ public class User implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorizations;
     }
 
     @Override
+    @JsonIgnore
     public String getUsername() {
         return name;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return true;
     }
