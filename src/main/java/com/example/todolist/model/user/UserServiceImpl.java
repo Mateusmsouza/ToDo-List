@@ -33,12 +33,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void encryptUserPassword(User user) {
-        BCryptPasswordEncoder encoder = passwordEncoder();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
-    }
-
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }
