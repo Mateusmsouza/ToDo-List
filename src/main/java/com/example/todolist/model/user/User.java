@@ -34,7 +34,7 @@ public class User implements UserDetails {
     @JoinTable(name = "user_authorization",
         joinColumns = { @JoinColumn(name = "USER_ID")},
         inverseJoinColumns = { @JoinColumn(name = "AUT_ID")})
-    @JsonIgnore
+
     private List<Authorization> authorizations;
 
     @JsonIgnore

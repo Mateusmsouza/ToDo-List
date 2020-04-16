@@ -20,7 +20,7 @@ public class UserController {
     public ResponseEntity<User> save(
             @RequestBody User user,
             UriComponentsBuilder uriComponentsBuilder){
-        user = userService.createOrUpdate(user);
+        user = userService.createOrUpdate(user, "CUSTOMER");
         //HttpHeaders responseHeaders = new HttpHeaders();
         return new ResponseEntity<User>(
                 user,
