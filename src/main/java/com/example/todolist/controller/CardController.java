@@ -2,6 +2,8 @@ package com.example.todolist.controller;
 
 import com.example.todolist.model.card.Card;
 import com.example.todolist.model.card.CardService;
+import com.example.todolist.view.View;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +22,13 @@ public class CardController {
     private CardService cardService;
 
     @RequestMapping("/cards")
+    @JsonView(View.CardRestAPI.class)
     public ResponseEntity<Collection<Card>> listCards(){
         return new ResponseEntity<Collection<Card>>(cardService.listAllCards(), HttpStatus.OK);
     }
 
     @RequestMapping("/cards/{cardId}")
+    @JsonView(View.CardRestAPI.class)
     public ResponseEntity<Card> getCard(
             @PathVariable("cardId") Long cardId){
 
@@ -36,6 +40,7 @@ public class CardController {
     }
 
     @PostMapping("/card")
+    @JsonView(View.CardRestAPI.class)
     public ResponseEntity<Card> save(
             Authentication authentication,
             @RequestBody Card card,
@@ -49,6 +54,7 @@ public class CardController {
     }
 
     @PatchMapping("/card")
+    @JsonView(View.CardRestAPI.class)
     public ResponseEntity<Card> update(
             Authentication authentication,
             @RequestBody Card card,
@@ -61,6 +67,7 @@ public class CardController {
     }
 
     @DeleteMapping("/card/{cardId}")
+    @JsonView(View.CardRestAPI.class)
     public ResponseEntity<Card> delete(
             @PathVariable("cardId") Long cardId,
             UriComponentsBuilder uriComponentsBuilder){
