@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -19,13 +20,11 @@ public class CardController {
     private CardService cardService;
 
     @RequestMapping("/cards")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Collection<Card>> listCards(){
         return new ResponseEntity<Collection<Card>>(cardService.listAllCards(), HttpStatus.OK);
     }
 
     @RequestMapping("/cards/{cardId}")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Card> getCard(
             @PathVariable("cardId") Long cardId){
 
@@ -37,11 +36,12 @@ public class CardController {
     }
 
     @PostMapping("/card")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Card> save(
+            Authentication authentication,
             @RequestBody Card card,
             UriComponentsBuilder uriComponentsBuilder){
-        card = cardService.createOrUpdate(card);
+
+        card = cardService.createOrUpdate(card, authentication.getName());
         return new ResponseEntity<Card>(
                 card,
                 HttpStatus.CREATED
@@ -49,11 +49,11 @@ public class CardController {
     }
 
     @PatchMapping("/card")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Card> update(
+            Authentication authentication,
             @RequestBody Card card,
             UriComponentsBuilder uriComponentsBuilder) {
-        card = cardService.createOrUpdate(card);
+        card = cardService.createOrUpdate(card, authentication.getName());
         return new ResponseEntity<Card>(
                 card,
                 HttpStatus.CREATED
@@ -61,7 +61,6 @@ public class CardController {
     }
 
     @DeleteMapping("/card/{cardId}")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Card> delete(
             @PathVariable("cardId") Long cardId,
             UriComponentsBuilder uriComponentsBuilder){

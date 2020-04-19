@@ -14,18 +14,14 @@ public class Authorization implements GrantedAuthority {
     private Long id;
 
     @Column(name = "AUT_NAME")
-    private String authorizationName;
+    private String authority;
 
     @Override
     public String getAuthority() {
-        return this.getAuthorizationName();
+        return this.authority;
     }
 
-    public String getAuthorizationName() {
-        return authorizationName;
-    }
-
-    public void setAuthorizationName(String authorizationName) {
-        this.authorizationName = authorizationName;
+    public void setAuthorizationName(String authority) {
+        this.authority = authority;
     }
 }

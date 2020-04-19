@@ -28,9 +28,9 @@ public class Card {
     @JoinColumn(name = "CARD_BLOCKER", nullable = true)
     private Card blockerCard;
 
-    @ManyToOne( fetch = FetchType.LAZY, optional = false)
     @JsonIgnore
-    @JoinColumn(name = "CARD_USER_OWNER", nullable = false)
+    @ManyToOne( fetch = FetchType.LAZY) // , optional = false
+    @JoinColumn(name = "CARD_USER_OWNER")
     private User userCardOwner;
 
     public Long getId() {

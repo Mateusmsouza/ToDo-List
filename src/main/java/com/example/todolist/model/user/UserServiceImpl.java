@@ -4,6 +4,7 @@ import com.example.todolist.model.authorization.Authorization;
 import com.example.todolist.model.authorization.AuthorizationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,16 +26,22 @@ public class UserServiceImpl implements UserService {
     private AuthorizationRepository authorizationRepository;
 
     @Override
-    public User createOrUpdate(User user, String authorizationName) {
+    public User createOrUpdate(User user, String authority) {
         encryptUserPassword(user);
-        addAuthorizationToUser(user, authorizationName);
+        addAuthorizationToUser(user, authority);
 
         return userRepository.save(user);
     }
 
-    private void addAuthorizationToUser(User user, String authorizationName) {
+    @Override
+    @PreAuthorize("isAuthenticated()")
+    public void delete(Long id) {
+        userRepository.deleteById(id);
+    }
+
+    private void addAuthorizationToUser(User user, String authority) {
         if (user.getAuthorities() == null || user.getAuthorities().size() < 1){
-            Optional<Authorization> authorizationFound = authorizationRepository.findByAuthorizationName(authorizationName);
+            Optional<Authorization> authorizationFound = authorizationRepository.findByAuthority(authority);
 
             if (authorizationFound.isPresent()){
                 List<Authorization> authorizationList = new ArrayList<Authorization>();
@@ -44,17 +51,6 @@ public class UserServiceImpl implements UserService {
 
             }
         }
-    }
-
-    public Optional<User> login(User user) {
-        return userRepository.findByEmailIgnoreCaseAndPassword(
-                user.getEmail(),
-                user.getPassword()
-        );
-    }
-
-    public void delete(Long id) {
-        userRepository.deleteById(id);
     }
 
     private void encryptUserPassword(User user) {

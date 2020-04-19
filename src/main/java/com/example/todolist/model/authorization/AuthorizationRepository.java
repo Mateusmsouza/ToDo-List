@@ -6,5 +6,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AuthorizationRepository extends CrudRepository<Authorization, Long> {
-    public Optional<Authorization> findByAuthorizationName(String authorizationName);
+    public Optional<Authorization> findByAuthority(String authorization);
 }
