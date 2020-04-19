@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('GOD') or hasRole('CUSTOMER')")
     public void delete(Long id) {
         userRepository.deleteById(id);
     }

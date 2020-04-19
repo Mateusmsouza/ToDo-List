@@ -21,19 +21,19 @@ public class CardServiceImpl implements CardService {
     private UserRepository userRepo;
 
     @Override
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('ROLE_GOD')")
     public ArrayList<Card> listAllCards() {
         return (ArrayList<Card>) cardRepo.findAll();
     }
 
     @Override
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAnyRole('ROLE_GOD', 'ROLE_CUSTOMER')")
     public Optional<Card> getCardById(Long cardId) {
         return cardRepo.findById(cardId);
     }
 
     @Override
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAnyRole('ROLE_GOD', 'ROLE_CUSTOMER')")
     public Card createOrUpdate(Card card, String username){
 
         if (card.getBlockerCard() != null){
@@ -41,12 +41,13 @@ public class CardServiceImpl implements CardService {
         }
 
         User userFound = userRepo.findByName(username).get();
-        System.out.println(userFound);
+        card.setUserCardOwner(userFound);
+
         return cardRepo.save(card);
     }
 
     @Override
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAnyRole('ROLE_GOD', 'ROLE_CUSTOMER')")
     public void delete(Long id) {
         cardRepo.deleteById(id);
     }

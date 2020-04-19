@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -44,8 +46,9 @@ public class CardController {
     public ResponseEntity<Card> save(
             Authentication authentication,
             @RequestBody Card card,
-            UriComponentsBuilder uriComponentsBuilder){
-
+            UriComponentsBuilder uriComponentsBuilder
+    ){
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString());
         card = cardService.createOrUpdate(card, authentication.getName());
         return new ResponseEntity<Card>(
                 card,
