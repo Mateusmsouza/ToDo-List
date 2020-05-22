@@ -45,10 +45,8 @@ public class CardController {
     @JsonView(View.CardRestAPI.class)
     public ResponseEntity<Card> save(
             Authentication authentication,
-            @RequestBody Card card,
-            UriComponentsBuilder uriComponentsBuilder
+            @RequestBody Card card
     ){
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString());
         card = cardService.createOrUpdate(card, authentication.getName());
         return new ResponseEntity<Card>(
                 card,
@@ -60,8 +58,7 @@ public class CardController {
     @JsonView(View.CardRestAPI.class)
     public ResponseEntity<Card> update(
             Authentication authentication,
-            @RequestBody Card card,
-            UriComponentsBuilder uriComponentsBuilder) {
+            @RequestBody Card card) {
         card = cardService.createOrUpdate(card, authentication.getName());
         return new ResponseEntity<Card>(
                 card,
@@ -72,12 +69,10 @@ public class CardController {
     @DeleteMapping("/card/{cardId}")
     @JsonView(View.CardRestAPI.class)
     public ResponseEntity<Card> delete(
-            @PathVariable("cardId") Long cardId,
-            UriComponentsBuilder uriComponentsBuilder){
+            @PathVariable("cardId") Long cardId){
         cardService.delete(cardId);
         return new ResponseEntity<Card>(
-                    HttpStatus.OK
-        );
+                    HttpStatus.OK);
         }
     }
 

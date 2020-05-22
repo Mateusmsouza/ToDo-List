@@ -19,10 +19,8 @@ public class UserController {
 
     @PostMapping("/user")
     public ResponseEntity<User> save(
-            @RequestBody User user,
-            UriComponentsBuilder uriComponentsBuilder){
-        user = userService.createOrUpdate(user, "CUSTOMER");
-        //HttpHeaders responseHeaders = new HttpHeaders();
+            @RequestBody User user){
+        user = userService.createOrUpdate(user, "ROLE_CUSTOMER");
         return new ResponseEntity<User>(
                 user,
                 HttpStatus.CREATED
@@ -30,7 +28,6 @@ public class UserController {
     }
 
     @DeleteMapping("/user/{userId}")
-    @PreAuthorize("hasAnyRole('ROLE_GOD', 'ROLE_CUSTOMER')")
     public  ResponseEntity<User> removeUser(
             @PathVariable Long userId){
         userService.delete(userId);

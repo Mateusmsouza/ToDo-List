@@ -21,7 +21,7 @@ public class CardServiceImpl implements CardService {
     private UserRepository userRepo;
 
     @Override
-    @PreAuthorize("hasRole('ROLE_GOD')")
+    @PreAuthorize("hasAnyRole('ROLE_GOD', 'ROLE_CUSTOMER')")
     public ArrayList<Card> listAllCards() {
         return (ArrayList<Card>) cardRepo.findAll();
     }

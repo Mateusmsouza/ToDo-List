@@ -27,5 +27,5 @@ CREATE TABLE user_authorization(
     AUT_ID BIGINT
 );
 
-INSERT INTO authorization(AUT_NAME) VALUES("GOD");
-INSERT INTO authorization(AUT_NAME) VALUES("CUSTOMER");
+INSERT INTO authorization(AUT_NAME) VALUES("ROLE_GOD");
+INSERT INTO authorization(AUT_NAME) VALUES("ROLE_CUSTOMER");
