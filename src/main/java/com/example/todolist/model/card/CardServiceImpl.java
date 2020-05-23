@@ -22,8 +22,13 @@ public class CardServiceImpl implements CardService {
 
     @Override
     @PreAuthorize("hasAnyRole('ROLE_GOD', 'ROLE_CUSTOMER')")
-    public ArrayList<Card> listAllCards() {
-        return (ArrayList<Card>) cardRepo.findAll();
+    public ArrayList<Card> listAllCards(String username) {
+        Optional<User> userQuery = userRepo.findByName(username);
+
+        if(userQuery.isPresent()) {
+            return (ArrayList<Card>) cardRepo.findByUserCardOwner(userQuery.get());
+        }
+        return new ArrayList<Card>();
     }
 
     @Override

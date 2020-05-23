@@ -2,6 +2,7 @@ package com.example.todolist.controller;
 
 import com.example.todolist.model.card.Card;
 import com.example.todolist.model.card.CardService;
+import com.example.todolist.model.user.User;
 import com.example.todolist.view.View;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,10 @@ public class CardController {
 
     @RequestMapping("/cards")
     @JsonView(View.CardRestAPI.class)
-    public ResponseEntity<Collection<Card>> listCards(){
-        return new ResponseEntity<Collection<Card>>(cardService.listAllCards(), HttpStatus.OK);
+    public ResponseEntity<Collection<Card>> listCards(
+            Authentication authentication
+    ){
+        return new ResponseEntity<Collection<Card>>(cardService.listAllCards(authentication.getName()), HttpStatus.OK);
     }
 
     @RequestMapping("/cards/{cardId}")
