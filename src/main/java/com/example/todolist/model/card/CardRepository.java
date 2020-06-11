@@ -6,5 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.ArrayList;
 
 public interface CardRepository extends CrudRepository<Card, Long> {
-    public ArrayList<Card> findByUserCardOwner(User user);
+    ArrayList<Card> findByUserCardOwner(User user);
+    ArrayList<Card> findByBlockerCard(Card card);
 }

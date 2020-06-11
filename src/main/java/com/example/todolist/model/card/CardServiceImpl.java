@@ -54,6 +54,13 @@ public class CardServiceImpl implements CardService {
     @Override
     @PreAuthorize("hasAnyRole('ROLE_GOD', 'ROLE_CUSTOMER')")
     public void delete(Long id) {
+        Card card = this.getCardById(id).get();
+        ArrayList<Card> cardsBlocked = cardRepo.findByBlockerCard(card);
+
+        if (!cardsBlocked.isEmpty()){
+            throw new IllegalArgumentException("Can't delete card that blocks others");
+        }
+
         cardRepo.deleteById(id);
     }
 }

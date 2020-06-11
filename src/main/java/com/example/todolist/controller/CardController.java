@@ -2,20 +2,17 @@ package com.example.todolist.controller;
 
 import com.example.todolist.model.card.Card;
 import com.example.todolist.model.card.CardService;
-import com.example.todolist.model.user.User;
 import com.example.todolist.view.View;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collection;
+import java.util.NoSuchElementException;
 
 @RestController
 @CrossOrigin
@@ -72,10 +69,28 @@ public class CardController {
     @DeleteMapping("/card/{cardId}")
     @JsonView(View.CardRestAPI.class)
     public ResponseEntity<Card> delete(
-            @PathVariable("cardId") Long cardId){
-        cardService.delete(cardId);
-        return new ResponseEntity<Card>(
-                    HttpStatus.OK);
+            @PathVariable("cardId") Long cardId) {
+        try {
+            cardService.delete(cardId);
+        } catch (IllegalArgumentException err) {
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.add("Error", "Can't exclude a card that blocks another card.");
+
+            return new ResponseEntity<Card>(
+                    httpHeaders,
+                    HttpStatus.UNPROCESSABLE_ENTITY);
+        } catch (NoSuchElementException err) {
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.add("Error", "Card not found.");
+
+            return new ResponseEntity<Card>(
+                    httpHeaders,
+                    HttpStatus.BAD_REQUEST);
         }
+        return new ResponseEntity<Card>(
+                HttpStatus.OK);
+        }
+
+
     }
 
