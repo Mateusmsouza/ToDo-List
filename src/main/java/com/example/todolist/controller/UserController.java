@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @CrossOrigin
@@ -27,13 +28,10 @@ public class UserController {
             );
 
         } catch (DataIntegrityViolationException error) {
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.add("Error", "Email or Username already taken by an account.");
-            return new ResponseEntity<User>(
-                    httpHeaders,
-                    HttpStatus.BAD_REQUEST
+            throw new ResponseStatusException(
+                    HttpStatus.UNPROCESSABLE_ENTITY,
+                    "Email or Username already taken by an account."
             );
-
         }
     }
 

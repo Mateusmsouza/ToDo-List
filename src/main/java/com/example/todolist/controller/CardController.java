@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
 import java.util.NoSuchElementException;
@@ -73,19 +74,15 @@ public class CardController {
         try {
             cardService.delete(cardId);
         } catch (IllegalArgumentException err) {
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.add("Error", "Can't exclude a card that blocks another card.");
-
-            return new ResponseEntity<Card>(
-                    httpHeaders,
-                    HttpStatus.UNPROCESSABLE_ENTITY);
+            throw new ResponseStatusException(
+                    HttpStatus.UNPROCESSABLE_ENTITY,
+                    "Can't exclude a card that blocks another card."
+            );
         } catch (NoSuchElementException err) {
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.add("Error", "Card not found.");
-
-            return new ResponseEntity<Card>(
-                    httpHeaders,
-                    HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Card not found."
+            );
         }
         return new ResponseEntity<Card>(
                 HttpStatus.OK);
