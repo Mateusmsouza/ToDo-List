@@ -1,5 +1,6 @@
 package com.example.todolist.model.card;
 
+import com.example.todolist.model.authorization.Authorization;
 import com.example.todolist.model.user.User;
 import com.example.todolist.model.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +27,23 @@ public class CardServiceImpl implements CardService {
         Optional<User> userQuery = userRepo.findByName(username);
 
         if(userQuery.isPresent()) {
+            User user = userQuery.get();
+            if (userAdmin(user)){
+                return (ArrayList<Card>) cardRepo.findAll();
+            }
             return (ArrayList<Card>) cardRepo.findByUserCardOwner(userQuery.get());
         }
         return new ArrayList<Card>();
     }
 
+    private Boolean userAdmin(User user) {
+        for(Authorization authorization: user.getAuthorizations()){
+            if(authorization.getAuthority().contains("ROLE_GOD")){
+                return true;
+            }
+        }
+        return false;
+    }
     @Override
     @PreAuthorize("hasAnyRole('ROLE_GOD', 'ROLE_CUSTOMER')")
     public Optional<Card> getCardById(Long cardId) {

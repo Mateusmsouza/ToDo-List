@@ -22,18 +22,18 @@ public class CardController {
     @Autowired
     private CardService cardService;
 
-    @RequestMapping("/cards")
+    @GetMapping("/cards")
     @JsonView(View.CardRestAPI.class)
     public ResponseEntity<Collection<Card>> listCards(
             Authentication authentication
-    ){
+    ) {
         return new ResponseEntity<Collection<Card>>(cardService.listAllCards(authentication.getName()), HttpStatus.OK);
     }
 
-    @RequestMapping("/cards/{cardId}")
+    @GetMapping("/cards/{cardId}")
     @JsonView(View.CardRestAPI.class)
     public ResponseEntity<Card> getCard(
-            @PathVariable("cardId") Long cardId){
+            @PathVariable("cardId") Long cardId) {
 
         Card card = cardService.getCardById(cardId).get();
         return new ResponseEntity<Card>(
@@ -47,7 +47,7 @@ public class CardController {
     public ResponseEntity<Card> save(
             Authentication authentication,
             @RequestBody Card card
-    ){
+    ) {
         card = cardService.createOrUpdate(card, authentication.getName());
         return new ResponseEntity<Card>(
                 card,
@@ -86,8 +86,8 @@ public class CardController {
         }
         return new ResponseEntity<Card>(
                 HttpStatus.OK);
-        }
-
-
     }
+
+
+}
 
